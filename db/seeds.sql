@@ -9,3 +9,23 @@ VALUES
 ('Sarah', 'Lourd', 'Legal Team Lead', 'Legal', 250000, ''),
 ('Tom', 'Allen', 'Lawyer', 'Legal', 190000, 'Sarah Lourd'),
 ('Tammer', 'Galal', 'Software Engineer', 'Engineering', 120000, 'Kevin Tupik');
+
+
+INSERT INTO departments
+    (department_name)
+    VALUES
+    ('Sales'),
+    ('Engineering'),
+    ('Finance'),
+    ('Legal');
+
+    INSERT INTO roles
+   (job_title, department_name)
+    VALUES
+   ('Sales Lead', 'Sales'),
+   ('Salesperson', 'Sales'),
+   ('Lead Engineer', 'Engineering'),
+   ('Software Engineer', 'Engineering'),
+   ('Accountant', 'Finance'),
+   ('Legal Team Lead', 'Legal'),
+   ('Lawyer', 'Legal');
