@@ -1,6 +1,7 @@
 const express = require('express');
 // const mysql = require('mysql2');
 const inquirer = require('inquirer');
+const db = require('./db/connection');
 
 
 
@@ -20,9 +21,10 @@ inquirer.prompt([
   message: "What would you like to do?",
   choices: ['View All Employees', 'View All Employees By Department', 'View All Employees By Manager', 'Add Employee', 'Remove Employee', 'Update Employee Role', 'Update Employee Manager']
 }
-.then(action => {
+.then (action => {
   action = action.beginApp
   switch (action)
+}
 
 
 
@@ -66,7 +68,7 @@ db.query(sql, (err, res) => {
     db.query(sql, (err, res) => {
       if (err) throw err
       console.table(res)
-  }
+  });
 
   const viewDepartments = () => {
     const sql = 'SELECT * FROM departments';
@@ -74,7 +76,7 @@ db.query(sql, (err, res) => {
       if (err) throw err
       console.table(res)
       
-    })
+    });
 
     const viewRoles = () => {
       const sql = 'SELECT * FROM roles';
@@ -82,6 +84,26 @@ db.query(sql, (err, res) => {
     db.query(sql, (err, res) => {
       if (err) throw err
       console.table(res)
+
+
+     //ADD DEPARTMENT TO DATABASE
+     const addDepartment = () => {
+      
+       inquirer.prompt({
+         type: 'input',
+         name: 'department_name', 
+         message: 'Please add the name of the new department:'
+       })
+       .then(newDepartment => {
+        newDepartment.department_name
+         const sql ='INSERT INTO departments (department_name) VALUES (?)';
+  const params = newDepartment
+  db.query(sql, params, (err, res) => {
+    if (err) throw err
+    console.log(`The ${newDept} department was added successfully.`)
+  })
+       
+     }
 // Default response for any other request (Not Found)
 app.use((req, res) => {
     res.status(404).end();
