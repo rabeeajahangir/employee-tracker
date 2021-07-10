@@ -5,5 +5,5 @@ CREATE TABLE employees (
    job_title VARCHAR(50) NOT NULL,
    departments VARCHAR(30) NOT NULL,
    salary NUMERIC,
-   manager_name VARCHAR(30) NOT NULL
+   manager_name VARCHAR(30),
    );

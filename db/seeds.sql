@@ -1,7 +1,7 @@
 INSERT INTO employees
-VALUES
 (first_name, last_name, job_title, departments, salary, manager_name)
-('John', 'Doe,', 'Sales Lead', 'Sales', 100000, 'Ashley Rodriguez'),
+VALUES
+('John', 'Doe', 'Sales Lead', 'Sales', 100000, 'Ashley Rodriguez'),
 ('Mike', 'Chan', 'Salesperson', 'Sales', 80000, 'John Doe'),
 ('Ashley', 'Rodrigues', 'Lead Engineer', 'Engineer', 120000, ''),
 ('Kevin', 'Tupik', 'Software Engineer', 'Engineer', 120000, ''),
