@@ -103,7 +103,43 @@ db.query(sql, (err, res) => {
     console.log(`The ${newDept} department was added successfully.`)
   })
        
-     }
+     //ADD NEW ROLES
+     const addRoles = () => {
+      departmentArr = []
+      newRoles = {}
+      const sql = `SELECT dept_name FROM departments`;
+      db.query(sql, (err, res) => {
+        for (let i = 0; i < res.length; i++) {
+          departments = res[i].department_name
+          departmentsArr.push(departments )
+        }
+        inquirer.prompt([{
+          type: 'input',
+          name: 'addRole',
+          message: 'What is the job title of the role?'
+        }, {
+          type: 'input',
+          name: 'addRoleSalary',
+          message: 'What is the salary of the new role?'
+        }, {
+          type: 'list',
+          name: 'deptOfRole',
+          message: 'Which department does the new role belong to?',
+          choices: deptArr.map(dept => `${dept}`)
+        }]).then(dept => {
+          newRoles.newRole = department.addRole
+          newRoles.newSalary = department.addRoleSalary
+          newRoles.department = department.deptOfRole
+    
+          const sql = `SELECT id FROM departments WHERE dept_name = ?`;
+          const params = [newRoleData.dept]
+          db.query(sql, params, (err, res) => {
+            newRoleData.id = res[0].id
+            completeAddRole(newRoleData);
+          })
+        })
+      })
+    }
 // Default response for any other request (Not Found)
 app.use((req, res) => {
     res.status(404).end();
