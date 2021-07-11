@@ -27,12 +27,17 @@ inquirer.prompt({
   switch (action) {
     case 'View All Employees':
 viewEmployees;
-    break
+    break;
 
     case 'View All Employees By Manager':
       viewEmployeesByManager();
-  }
+  break;
 
+  case 'View All Employees By Department':
+    viewEmployeesByDepartment();
+    break;
+
+    case  'Add Employee':
 
 
 
@@ -51,13 +56,13 @@ db.query(sql, (err, res) => {
 });
 
 
-// const viewEmployeesByDepartment = () => {
-//   const sql = 'SELECT employees.id, employees.first_name, employees.last_name, employees.departments';
-// }
-// db.query(sql, (err, res) => {
-//   if (err) throw err
-//   console.table(res)
-// });
+const viewEmployeesByDepartment = () => {
+  const sql = 'SELECT employees.id, employees.first_name, employees.last_name, employees.departments';
+}
+db.query(sql, (err, res) => {
+  if (err) throw err
+  console.table(res)
+});
 
 
   const viewEmployeesByManager = () => {
@@ -65,8 +70,53 @@ db.query(sql, (err, res) => {
     db.query(sql, (err, res) => {
       if (err) throw err
       console.table(res)
-  });
+  })
+}
+// ADD NEW EMPLOYEE
+const addEmployee = (newEmployee) => {
+  const sql = `INSERT INTO employees (first_name, last_name, job_title, departments, salary, manager_name)
+  VALUES (?,?,?,?,?,?)`;
+  
+  const params = [newEmployee.first_name, newEmployee.last_name, newEmployee.job_title, newEmployee.departments, newEmployee.salary, newEmployee.manager_name]
+}
+db.query(sql, params, (err, result) => {
+  if (err){
+    console.log(err)
+  }
+  console.log(`New ${newEmployee.title}, ${newEmployee.first_name} ${newEmployee.last_name}, added successfully.`)
+  return initiate();
+})
+}
+const selectManager = (newEmployee) => {
 
+  const sql = `SELECT employees.id, employees.first_name, employees.last_name, roles.job_title FROM employees JOIN roles ON employees.role_id = roles.id WHERE roles.job_title;
+
+  db.query(sql, (err, res) => {
+    for (let i = 0; i < res.length; i++) {
+      manager = `${res[i].first_name} ${res[i].last_name}`, `${res[i].title}`
+      managerArr.push(manager)
+    }
+    inquirer.prompt({
+      type: 'list',
+      name: 'manager',
+      message: 'Select manager',
+      choices: managerArr.map(manager => `${manager}`)
+    }).then(manager => {
+      newEmployee.manager = manager.manager
+
+      let index = manager.manager.indexOf(" ")
+      newEmployee.manager_first_name = manager.manager.substr(0, index)
+      newEmployee.manager_last_name = manager.manager.substr(index + 1)
+
+      const sql = `SELECT id FROM employees WHERE first_name = ? AND last_name = ?`;
+      const params = [employeeData.manager_first_name, employeeData.manager_last_name]
+      db.query(sql, params, (req, res) => {
+        newEmployee.manager_id = res[0].id
+        AddEmployee(newEmployee)
+      })
+    })
+  })
+}
 //   const viewDepartments = () => {
 //     const sql = 'SELECT * FROM departments';
 //     db.query(sql, (err, res) => {
