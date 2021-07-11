@@ -19,3 +19,50 @@ router.get('/departments', (res, req) => {
         })
     })
 });
+
+//DELETE A DEPARTMENT
+router.delete('/department/:id', (req, res) => {
+    const sql = 'DELETE FROM departments WHERE id = ?';
+    const params = [req.params.id];
+    db.query(sql, params, (err, result) => {
+        if(err) {
+          res.json({error: err.message});
+          return
+        }
+        else if (!result.affectedRows){
+          res.json({message: 'Department not found.'})
+        }
+        else {
+          res.json({
+            message: 'Department successfully deleted.',
+            changes: result.affectedRows,
+            id: req.params.id
+          })
+        }
+      })
+    })
+})
+
+//CREATE A DEPARTMENT
+router.post('/departments', (req, res) => {
+    const errors = checkInput(body, 'dept_name')
+    if(errors){
+      res.json({error: errors});
+      return
+    }
+    const sql = `INSERT INTO departments (dept_name) VALUES (?)`;
+    const params = [body.dept_name]
+    db.query(sql, params, (err, result) => {
+      if (err) {
+        res.status(400).json({
+          error: err.message
+        })
+      }
+      res.json({
+        message: 'Department added successfully!',
+        data: body
+      })
+    });
+  })
+
+  module.exports = router;
