@@ -44,7 +44,7 @@ router.delete('/department/:id', (req, res) => {
 })
 
 //CREATE A DEPARTMENT
-router.post('/departments', (req, res) => {
+router.post('/departments', ({body}, res) => {
     const errors = checkInput(body, 'dept_name')
     if(errors){
       res.json({error: errors});

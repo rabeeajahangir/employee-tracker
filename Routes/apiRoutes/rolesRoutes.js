@@ -43,7 +43,7 @@ router.delete('/roles/:id', (req, res) => {
       })
     
 // CREATE A ROLE
-router.post('/roles', ({body},  res) => {
+router.post('/roles', ({body}, res) => {
     const errors = checkInput(body, 'job_title', 'department_name')
     if(errors){
         res.json({error: errors});
