@@ -1,53 +1,54 @@
 const express = require('express');
-// const mysql = require('mysql2');
 const inquirer = require('inquirer');
+const {createPromptModule} = require ('inquirer');
 const db = require('./db/connection');
-
-
+const router = require('express').Router();
 
 const PORT = process.env.PORT || 3001;
 const app = express();
+const apiRoutes = require('./routes/apiRoutes')
 
 // Express middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+app.use('/api', apiRoutes)
+
+const initiate = () => {
+
+inquirer.prompt({
+  type: 'list',
+  name: 'beginApp',
+  message: "What would you like to do?",
+  choices: ['View All Employees', 'View All Employees By Department', 'View All Employees By Manager', 'Add Employee', 'Remove Employee', 'Update Employee Role', 'Update Employee Manager']
+}
+.then (action => {
+  action = action.beginApp
+  switch (action) {
+    case 'View All Employees':
+viewEmployees;
+    break
+
+    case 'View All Employees By Manager':
+      viewEmployeesByManager();
+  }
 
 
-// inquirer.prompt([
-//   {
-//   type: 'list',
-//   name: 'beginApp',
-//   message: "What would you like to do?",
-//   choices: ['View All Employees', 'View All Employees By Department', 'View All Employees By Manager', 'Add Employee', 'Remove Employee', 'Update Employee Role', 'Update Employee Manager']
-// }
-// .then (action => {
-//   action = action.beginApp
-//   switch (action)
-// }
 
 
 
 
 
-
-
-
-
-
-//   db.query(`SELECT * FROM employees`, (err, rows) => {
-//     console.log(rows);
-//   });
 
 //ALL OPTIONS LISTED 
 
-// const viewEmployees = () => {
-//   const sql = 'SELECT * FROM employees'
-// }
-// db.query(sql, (err, res) => {
-//   if (err) throw err
-//   console.table(res)
-// });
+const viewEmployees = () => {
+  const sql = 'SELECT * FROM employees'
+}
+db.query(sql, (err, res) => {
+  if (err) throw err
+  console.table(res)
+});
 
 
 // const viewEmployeesByDepartment = () => {
@@ -59,12 +60,12 @@ app.use(express.json());
 // });
 
 
-//   const viewEmployeesByManager = () => {
-//     const sql = 'SELECT employees.id, employees.first_name, employees.last_name, employees.manager_name';
-//     db.query(sql, (err, res) => {
-//       if (err) throw err
-//       console.table(res)
-//   });
+  const viewEmployeesByManager = () => {
+    const sql = 'SELECT employees.id, employees.first_name, employees.last_name, employees.manager_name';
+    db.query(sql, (err, res) => {
+      if (err) throw err
+      console.table(res)
+  });
 
 //   const viewDepartments = () => {
 //     const sql = 'SELECT * FROM departments';
