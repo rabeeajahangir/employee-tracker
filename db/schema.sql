@@ -20,3 +20,5 @@ CREATE TABLE employees (
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
     job_title VARCHAR(30),
     department_name VARCHAR(30));
+
+    

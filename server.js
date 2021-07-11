@@ -33,11 +33,7 @@ app.use(express.json());
 
 
 
-app.get('/', (req, res) => {
-    res.json({
-      message: 'Hello World'
-    });
-  });
+
 
 //   db.query(`SELECT * FROM employees`, (err, rows) => {
 //     console.log(rows);
