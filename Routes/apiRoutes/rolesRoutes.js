@@ -20,7 +20,7 @@ return
 })
 
 //DELETE A ROLE
-router.delete('/role/:id', (req, res) => {
+router.delete('/roles/:id', (req, res) => {
     const sql = 'DELETE FROM roles WHERE id = ?';
     const params = [req.params.id];
 
@@ -42,7 +42,28 @@ router.delete('/role/:id', (req, res) => {
         })
       })
     
+// CREATE A ROLE
+router.post('/roles', ({body},  res) => {
+    const errors = checkInput(body, 'job_title', 'department_name')
+    if(errors){
+        res.json({error: errors});
+        return
+    }
+    const sql = `INSERT INTO roles (job_title, department_name) VALUES (?,?)`;
+    const params = [body.job_title, body.department_name];
 
+    db.query(sql, params, (err, result) => {
+        if (err) {
+        res.status(400).json({
+            error: err.message
+        })
+        }
+        res.json({
+        message: 'Role added successfully!',
+        data: body
+        })
+    })
+      })
 
 
 
