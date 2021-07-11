@@ -38,10 +38,16 @@ viewEmployees;
     break;
 
     case  'Add Employee':
+      addEmployee();
+      break;
 
+case 'Remove Employee':
+  removeEmployee();
+  break;
 
-
-
+case'Update Employee Role':
+updateRole();
+break;
 
 
 
@@ -93,14 +99,15 @@ const selectManager = (newEmployee) => {
 
   db.query(sql, (err, res) => {
     for (let i = 0; i < res.length; i++) {
-      manager = `${res[i].first_name} ${res[i].last_name}`, `${res[i].title}`
+      
+      let manager = ${res[i].first_name} ${res[i].last_name}, ${res[i].title}
       managerArr.push(manager)
     }
     inquirer.prompt({
       type: 'list',
       name: 'manager',
       message: 'Select manager',
-      choices: managerArr.map(manager => `${manager}`)
+      choices: managerArr.map(manager => ${manager})
     }).then(manager => {
       newEmployee.manager = manager.manager
 
@@ -108,15 +115,57 @@ const selectManager = (newEmployee) => {
       newEmployee.manager_first_name = manager.manager.substr(0, index)
       newEmployee.manager_last_name = manager.manager.substr(index + 1)
 
-      const sql = `SELECT id FROM employees WHERE first_name = ? AND last_name = ?`;
+      const sql = SELECT id FROM employees WHERE first_name = ? AND last_name = ?`;
       const params = [employeeData.manager_first_name, employeeData.manager_last_name]
       db.query(sql, params, (req, res) => {
         newEmployee.manager_id = res[0].id
         AddEmployee(newEmployee)
       })
-    })
-  })
-}
+    }
+
+//DELETE AN EMPLOYEE
+    remEmployee = {}
+    const removeEmployee = () => {
+      let delEmployee = [];
+      const sql = `SELECT * FROM employees`;
+      db.query(sql,(req, res) => {
+        for(let i = 0; i < res.length; i++){
+          let employee = `${res[i].first_name} ${res[i].last_name}`
+          delEmployeeArr.push(employee)
+        }
+        inquirer.prompt({
+          type: 'list',
+          name: 'deleteEmp',
+          message: 'Which employee would you like to delete?',
+          choices: remEmployeeArr.map(employees => `${employees}`)
+        }).then(employee => {
+          let index = employee.delEmployee.indexOf(" ")
+          remEmployee.first_name = employees.delEmployee.substr(0, index)
+          remEmployee.last_name = employees.delEmployee.substr(index + 1)
+          
+          const sql = `SELECT id FROM employees WHERE first_name = ? AND last_name = ?`;
+          const params = [remEmployee.first_name, remEmployee.last_name]
+          db.query(sql, params, (req, result) => {
+            remEmployee.id = result[0].id
+            return delEmployee(remEmployee)
+          })
+        })
+      })
+      }
+      const delEmployee = () => {
+        const sql = `DELETE FROM employees WHERE id = ?`;
+        const params = [remEmployee.id]
+        db.query(sql, params, (err, res) => {
+          if(!res.affectedRows){
+            console.log('Employee not found')
+          }
+          console.log(`${remEmployee.first_name} ${remEmployee.last_name} successfully deleted.`)
+          initiate();
+        })
+      }
+      
+
+    }
 //   const viewDepartments = () => {
 //     const sql = 'SELECT * FROM departments';
 //     db.query(sql, (err, res) => {
