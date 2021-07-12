@@ -1,11 +1,12 @@
 const express = require('express');
 const inquirer = require('inquirer');
 const {createPromptModule} = require ('inquirer');
-const db = require('./db/connection');
 const router = require('express').Router();
 
 const PORT = process.env.PORT || 3001;
 const app = express();
+const { connect } = require('./db/connection');
+const db = require('./db/connection');
 const apiRoutes = require('./routes/apiRoutes')
 
 // Express middleware
@@ -20,10 +21,11 @@ inquirer.prompt({
   type: 'list',
   name: 'beginApp',
   message: "What would you like to do?",
-  choices: ['View All Employees', 'View All Department', 'Update Department', 'Add Employee', 'Remove Employee', 'Update Employee Role']
+  choices: ['View All Employees', 'View All Department', 'View All Roles', 'Update Department', 'Add Employee', 'Remove Employee', 'Update Employee Role']
 }
 .then (action => {
   action = action.beginApp
+  
   switch (action) {
     case 'View All Employees':
 viewEmployees;
@@ -37,12 +39,23 @@ case 'Remove Employee':
   removeEmployee();
   break;
 
-case'Update Employee Role':
-updateRole();
+  case 'View All Roles':
+      allRoles();
+      break;
+
+case 'Update Employee Role':
+selectEmployee();
 break;
 
+case 'View All Department':
+  viewDepartments();
+  break;
 
+  case 'Update Department':
+    addDepartments();
+    break;
 
+    
 //ALL OPTIONS LISTED 
 //VIEW ALL EMPLOYEES
 const viewEmployees = () => {
@@ -99,6 +112,10 @@ db.query(sql, params, (err, result) => {
         })
       })
       }
+
+
+
+
       const delEmployee = () => {
         const sql = `DELETE FROM employees WHERE id = ?`;
         const params = [remEmployee.id]
@@ -235,14 +252,21 @@ const updateRole = (currentEmployee) => {
     }
   })
 }
-
+//respond to requests not found
 app.use((req, res) => {
     res.status(404).end();
-  });
+  })
   
 
 
+//connection to server
 
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
+db.connect(err => {
+  if (err) throw err;
+  console.log('Database connected.');
+
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    initiate();
+  });
+});
