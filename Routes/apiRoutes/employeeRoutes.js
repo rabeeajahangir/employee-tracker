@@ -11,7 +11,7 @@ router.get('/employees', (req, res) => {
     db.query(sql, (err, rows) => {
       if (err) {
         res.status(500).json({ error: err.message });
-        return;
+        return
       }
       res.json({
         message: 'success',
@@ -21,7 +21,7 @@ router.get('/employees', (req, res) => {
   });
 
   //GET SINGLE EMPLOYEE
-  router.get('/api/employees/:id', (req, res) => {
+  router.get('/employees/:id', (req, res) => {
     const sql = `SELECT * FROM employees WHERE id = ?`;
     const params = [req.params.id];
   
@@ -33,13 +33,12 @@ router.get('/employees', (req, res) => {
       res.json({
         message: 'success',
         data: row
-      });
-    });
+      })
+    })
   });
 
   //DELETE AN EMPLOYEE
-  // Delete a candidate
-router.delete('/api/employees/:id', (req, res) => {
+router.delete('/employees/:id', (req, res) => {
     const sql = `DELETE FROM employees WHERE id = ?`;
     const params = [req.params.id];
   
@@ -63,16 +62,16 @@ router.delete('/api/employees/:id', (req, res) => {
   //CREATE AN EMPLOYEE
   // Create a candidate
 router.post('/api/employees', ({ body }, res) => {
-    const errors = checkInput(body, 'first_name', 'last_name', 'job-title', 'departments', 'salary', 'manager_name');
+    const errors = checkInput(body, 'first_name', 'last_name', 'job_title', 'departments', 'salary', 'manager_name');
   
     if (errors) {
       res.status(400).json({ error: errors });
       return;
     }
 
-    const sql = `INSERT INTO candidates ('first_name', 'last_name', 'job-title', 'departments', 'salary', 'manager_name')
+    const sql = `INSERT INTO candidates ('first_name', 'last_name', 'job_title', 'departments', 'salary', 'manager_name')
   VALUES (?,?,?,?,?,?)`;
-const params = [body.first_name, body.last_name, body.job-title, body.departments, body.salary, body.manager_name];
+const params = [body.first_name, body.last_name, body.job_title, body.departments, body.salary, body.manager_name];
 
 db.query(sql, params, (err, result) => {
   if (err) {

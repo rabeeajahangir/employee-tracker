@@ -7,13 +7,13 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 const { connect } = require('./db/connection');
 const db = require('./db/connection');
-const apiRoutes = require('./routes/apiRoutes')
+const apiRoutes = require('./routes/apiRoutes');
 
 // Express middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use('/api', apiRoutes)
+app.use('/api', apiRoutes);
 
 const initiate = () => {
 
@@ -22,7 +22,7 @@ inquirer.prompt({
   name: 'beginApp',
   message: "What would you like to do?",
   choices: ['View All Employees', 'View All Department', 'View All Roles', 'Update Department', 'Add Employee', 'Remove Employee', 'Update Employee Role']
-}
+})
 .then (action => {
   action = action.beginApp
   
@@ -54,17 +54,20 @@ case 'View All Department':
   case 'Update Department':
     addDepartments();
     break;
-
+  }
+})
+}
     
 //ALL OPTIONS LISTED 
 //VIEW ALL EMPLOYEES
 const viewEmployees = () => {
-  const sql = 'SELECT * FROM employees'
-}
+  const sql = 'SELECT * FROM employees';
+
 db.query(sql, (err, res) => {
   if (err) throw err
   console.table(res)
-});
+  initiate();
+})
 
 
 
@@ -83,6 +86,8 @@ db.query(sql, params, (err, result) => {
   return initiate();
 })
 }
+
+
 //DELETE AN EMPLOYEE
     remEmployee = {}
     const removeEmployee = () => {
@@ -142,12 +147,12 @@ initiate();
 const addDepartments = () => {
   inquirer.prompt({
       type: 'input',
-      name: 'dept_name',
+      name: 'departmentt_name',
       message: 'What is the name of the new department?'
     })
     .then(newDept => {
       newDept = newDept.department_name
-      const sql = `INSERT INTO departments (dept_name) VALUES (?)`;
+      const sql = `INSERT INTO departments (department_name) VALUES (?)`;
       const params = newDept
       db.query(sql, params, (err, result) => {
         if (err) throw err
@@ -215,16 +220,16 @@ const chooseRole = () => {
       type: 'list',
       name: 'updateRole',
       message: 'Select new role.',
-      choices: rolesArr.map(role => `${role}`)
+      choices: rolesArr.map(roles => `${roles}`)
 
     }).then(newRole => {
-      currentEmployees.newRole = newRole.updateRole
+      currentEmployees.newRoles = newRoles.updateRoles
       
       const sql = `SELECT id FROM roles WHERE roles.title = ?`
-      const params = [currentEmployees.newRole]
+      const params = [currentEmployees.newRoles]
       db.query(sql, params, (err, res) => {
         if(err) throw err;
-        currentEmployee.newRole_id = res[0].id
+        currentEmployee.newRoles_id = res[0].id
         updateRole(currentEmployee)
       })
     })
@@ -235,7 +240,7 @@ const updateRole = (currentEmployee) => {
     type: 'list',
     name: 'confirmUpdate',
     message: 'Are you sure you want to update the role of this employee?',
-    choices: ['Confirm update.','Cancel, return to menu.']
+    choices: ['Confirm update','Cancel', 'return to menu']
   }).then(data => {
     if(data.confirmUpdate === "Cancel, return to menu."){
       console.log('Update cancelled.')
@@ -243,8 +248,8 @@ const updateRole = (currentEmployee) => {
     }
     if(data.confirmUpdate === "Confirm update."){
       console.log(currentEmployee)
-      const sql = `UPDATE employees SET role_id = ? WHERE id = ?`;
-      const params = [currentEmployee.newRole_id, currentEmployee.id]
+      const sql = `UPDATE employees SET job_title = ? WHERE job_title = ?`;
+      const params = [currentEmployee.newjob_title, currentEmployee.id]
       db.query(sql, params, (err, res) => {
         console.log(`${currentEmployee.first_name} ${currentEmployee.last_name} successfully updated to ${currentEmployee.newRole}`)
         initiate();
@@ -260,13 +265,10 @@ app.use((req, res) => {
 
 
 //connection to server
-
 db.connect(err => {
   if (err) throw err;
   console.log('Database connected.');
-
-  app.listen(PORT, () => {
+  app.listen (PORT, () => {
     console.log(`Server running on port ${PORT}`);
-    initiate();
   });
-});
+  });

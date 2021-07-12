@@ -7,7 +7,7 @@ const checkInput = require('../../utils/checkInput');
 router.get('/roles', (res, res) => {
     const sql = 'SELECT * FROM roles';
 
-    db.query(sql, (err, row) => {
+    db.query(sql, (err, rows) => {
         if (err){
             res.status(500).json({error: err.message})
 return
