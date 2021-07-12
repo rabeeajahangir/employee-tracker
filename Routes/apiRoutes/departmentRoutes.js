@@ -10,7 +10,7 @@ router.get('/departments', (res, req) => {
     db.query(sql, (err, rows) => {
         if (err){
 
-            res.statusCode(500).json{error:err.message};
+            res.statusCode(500).json {error:err.message};
             return;
         }
         res.json({
@@ -41,7 +41,7 @@ router.delete('/department/:id', (req, res) => {
         }
       })
     })
-})
+
 
 //CREATE A DEPARTMENT
 router.post('/departments', ({body}, res) => {
