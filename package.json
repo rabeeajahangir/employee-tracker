@@ -17,15 +17,15 @@
   },
   "homepage": "https://github.com/rabeeajahangir/employee-tracker#readme",
   "keywords": [],
-  "description": "",
   "dependencies": {
     "console.table": "^0.10.0",
     "express": "^4.17.1",
-    "inquirer": "^8.1.1",
+    "inquirer": "^8.1.2",
     "mysql2": "^2.2.5"
   },
   "devDependencies": {
     "jest": "^27.0.6",
     "nodemon": "^2.0.12"
-  }
+  },
+  "description": ""
 }
