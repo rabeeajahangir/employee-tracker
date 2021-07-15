@@ -21,7 +21,7 @@ router.get('/departments', (res, req) => {
 });
 
 //DELETE A DEPARTMENT
-router.delete('/department/:id', (req, res) => {
+router.delete('/departments/:id', (req, res) => {
     const sql = 'DELETE FROM departments WHERE id = ?';
     const params = [req.params.id];
     db.query(sql, params, (err, result) => {

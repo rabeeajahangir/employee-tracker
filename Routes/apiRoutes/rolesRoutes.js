@@ -4,7 +4,7 @@ const db = require('../../db/connection');
 const checkInput = require('../../utils/checkInput');
 
 //GET ALL ROUTES
-router.get('/roles', (res, res) => {
+router.get('/roles', (req, res) => {
     const sql = 'SELECT * FROM roles';
 
     db.query(sql, (err, rows) => {

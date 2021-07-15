@@ -60,7 +60,6 @@ router.delete('/employees/:id', (req, res) => {
   });
   
   //CREATE AN EMPLOYEE
-  // Create a candidate
 router.post('/api/employees', ({ body }, res) => {
     const errors = checkInput(body, 'first_name', 'last_name', 'job_title', 'departments', 'salary', 'manager_name');
   
@@ -79,15 +78,15 @@ db.query(sql, params, (err, result) => {
     return;
   }
   res.json({
-    message: 'success',
+    message: 'New Employee Added!',
     data: body
   });
 });
   });
 
 // update employee's role
-router.put('/employee/:id', (req, res) => {
-    const errors = checkInput(req.body, 'role_id');
+router.put('/employees/:id', (req, res) => {
+    const errors = checkInput(req.body, 'roles_id');
     
     if (errors) {
     res.status(400).json({ error: errors });

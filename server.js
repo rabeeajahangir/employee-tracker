@@ -73,7 +73,7 @@ inquirer.prompt({
 const viewDepartments = () => {
   const sql = 'SELECT * FROM departments';
   db.query(sql, (err, res) => {
-    if (err) throw err
+    if (err) throw err;
     console.table(res)
     initiate();
   })
@@ -82,7 +82,7 @@ const viewRoles = () => {
   const sql = 'SELECT roles.title, roles.id, roles.salary, departments.dept_name FROM roles JOIN departments ON roles.dept_id = departments.id';
   
   db.query(sql, (err, res) => {
-    if (err) throw err
+    if (err) throw err;
     console.table(res)
     initiate();
   })
@@ -99,7 +99,7 @@ const viewEmployees= () => {
   
   
     db.query(sql, (err, res) => {
-      if (err) throw err
+      if (err) throw err;
       console.table(res)
       initiate();
     })
@@ -117,7 +117,7 @@ const addDept = () => {
       const sql = `INSERT INTO departments (dept_name) VALUES (?)`;
       const params = newDept
       db.query(sql, params, (err, result) => {
-        if (err) throw err
+        if (err) throw err;
         //console.table(result)
         console.log(`The ${newDept} department was added successfully.`)
         initiate();
@@ -375,7 +375,7 @@ const deleteDept = (dept) => {
     const params = [dept.id];
 
     db.query(sql, params, (err, result) => {
-      if(err) throw err
+      if(err) throw err;
       console.log(`${dept.dept_name} department successfully deleted.`)
       initiate();
     })
