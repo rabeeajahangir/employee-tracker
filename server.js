@@ -16,14 +16,13 @@ app.use(express.json());
 app.use('/api', apiRoutes)
 
 const initiate = () => {
-
-inquirer.prompt({
-  type: 'list',
-  name: 'selectOption',
-  message: "What would you like to do?",
-  choices: ['View All Departments', 'View All Roles', 'View All Employees','Add A Department', 'Add A Role', 'Add An Employee', 'Update An Employee Role', 'Delete A Department', 'Delete A Role', 'Delete An Employee']
+  inquirer.prompt({
+    type: 'list',
+    name: 'selectAction',
+    message: 'What would you like to do?',
+    choices: ['View All Departments', 'View All Roles', 'View All Employees','Add A Department', 'Add A Role', 'Add An Employee', 'Update An Employee Role', 'Delete A Department', 'Delete A Role', 'Delete An Employee']
   }).then(action => {
-        action = action.selectOption
+        action = action.selectAction
         switch (action) {
           case 'View All Departments':
             viewDepartments();
@@ -68,12 +67,11 @@ inquirer.prompt({
   })
 }
 
-//VIEW ALL OPTIONS
-//View Departments
+// VIEW ALL OPTIONS
 const viewDepartments = () => {
   const sql = 'SELECT * FROM departments';
   db.query(sql, (err, res) => {
-    if (err) throw err;
+    if (err) throw err
     console.table(res)
     initiate();
   })
@@ -82,28 +80,26 @@ const viewRoles = () => {
   const sql = 'SELECT roles.title, roles.id, roles.salary, departments.dept_name FROM roles JOIN departments ON roles.dept_id = departments.id';
   
   db.query(sql, (err, res) => {
-    if (err) throw err;
+    if (err) throw err
     console.table(res)
     initiate();
   })
 }
-
-//View Employees
 const viewEmployees= () => {
 
-  const sql= `SELECT employees.id, employees.first_name, employees.last_name, employees.manager_id, roles.title, roles.salary, departments.dept_name 
-  FROM employees 
-  JOIN roles ON employees.role_id = roles.id 
-  JOIN departments ON roles.dept_id = departments.id 
-  ORDER BY employees.id;`
-  
-  
-    db.query(sql, (err, res) => {
-      if (err) throw err;
-      console.table(res)
-      initiate();
-    })
-  }
+const sql= `SELECT employees.id, employees.first_name, employees.last_name, employees.manager_id, roles.title, roles.salary, departments.dept_name 
+FROM employees 
+JOIN roles ON employees.role_id = roles.id 
+JOIN departments ON roles.dept_id = departments.id 
+ORDER BY employees.id;`; 
+
+
+  db.query(sql, (err, res) => {
+    if (err) throw err
+    console.table(res)
+    initiate();
+  })
+}
 
 // ADD OPTIONS
 const addDept = () => {
@@ -117,7 +113,7 @@ const addDept = () => {
       const sql = `INSERT INTO departments (dept_name) VALUES (?)`;
       const params = newDept
       db.query(sql, params, (err, result) => {
-        if (err) throw err;
+        if (err) throw err
         //console.table(result)
         console.log(`The ${newDept} department was added successfully.`)
         initiate();
@@ -169,6 +165,7 @@ const completeAddRole = (newRoleData) => {
     initiate();
   })
 }
+
 newEmployeeData = {};
 const addEmployee = () => {
   roleArr = []
@@ -190,9 +187,9 @@ const addEmployee = () => {
         message: `Employee's last name:`
       }, {
         type: 'list',
-        name: 'title',
+        name: 'roles.title',
         message: 'Select employee role',
-        choices: roleArr.map(role => `${role}`)
+        choices: roleArr.map(role => `${roles}`)
       }])
       .then(employee => {
         managerArr = [];
@@ -285,7 +282,7 @@ const selectEmployee = () => {
       })
     })
   })
-}
+};
 const chooseRole = () => {
   roleArr = []
 
@@ -375,7 +372,7 @@ const deleteDept = (dept) => {
     const params = [dept.id];
 
     db.query(sql, params, (err, result) => {
-      if(err) throw err;
+      if(err) throw err
       console.log(`${dept.dept_name} department successfully deleted.`)
       initiate();
     })
@@ -458,7 +455,7 @@ const deleteEmp = () => {
       console.log('Employee not found')
     }
     console.log(`${empDelete.first_name} ${empDelete.last_name} successfully deleted.`)
-    initiate;
+    initiate();
   })
 }
 
@@ -473,6 +470,6 @@ db.connect(err => {
   console.log('Database connected.');
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-    initiate;
+    initiate();
   });
 });
