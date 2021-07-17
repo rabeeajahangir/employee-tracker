@@ -5,6 +5,7 @@ const checkInput = require('../../utils/checkInput');
 
 // GET ALL EMPLOYEES
 
+//get all employees
 router.get('/employees', (req, res) => {
     const sql = `SELECT employees.id, employees.first_name, employees.last_name, 
     roles.title, roles.salary, 
