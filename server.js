@@ -195,7 +195,7 @@ const addEmployee = () => {
         const sql = `SELECT id FROM roles WHERE roles.title = ?`
         const params = [newEmployeeData.title]
         db.query(sql, params, (err, res) => {
-          newEmployeeData.role_id = res[0].id
+          newEmployeeData.role_id = res[i].id
           selectManager(newEmployeeData);
         })
       })
