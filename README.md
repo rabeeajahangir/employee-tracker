@@ -1,6 +1,6 @@
-# employee-tracker
+#READ ME -
 
-Purpose of the Application:
+#Purpose of the Application:
 This application is set up for business owners to help them manager their business operations by the management of roles, departments and list of employees. This application gives hands on information of different employee titles, managers and salaries.
 
 Technologies Used:
