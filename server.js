@@ -139,7 +139,8 @@ const addRole = () => {
       name: 'deptOfNewRole',
       message: 'Which department does the new role belong to?',
       choices: deptArr.map(dept => `${dept}`)
-    }]).then(dept => {
+    }])
+    .then(dept => {
       newRoleData.newRole = dept.addRole
       newRoleData.newSalary = dept.addRoleSalary
       newRoleData.dept = dept.deptOfNewRole
@@ -160,14 +161,15 @@ const completeAddRole = (newRoleData) => {
     if(err) throw err;
     console.log(`${newRoleData.newRole} added successfully!`)
     initiate();
-  }}
+  })}
 
 
 
 // ADD NEW EMPLOYEE
 
 const addEmployee = () => {
-  newEmployee = []
+  // newEmployee = []
+  roleArr = []
   newEmployeeData = {}
   const sql = `SELECT roles.title FROM roles`;
   db.query(sql, (err, res) => {
@@ -186,7 +188,7 @@ const addEmployee = () => {
         message: `Employee's last name:`
       }, {
         type: 'list',
-        name: 'roles.title',
+        name: 'title',
         message: 'Select employee role',
         choices: roleArr.map(role => `${role}`)
       }])
@@ -194,7 +196,7 @@ const addEmployee = () => {
         newEmployee = [];
         newEmployeeData.first_name = employee.first_name
         newEmployeeData.last_name = employee.last_name
-        newEmployeeData.roles.title = employee.roles.title
+        newEmployeeData.title = employee.title
 
         const sql = `SELECT id FROM roles WHERE roles.title = ?`
         const params = [newEmployeeData.title]
@@ -202,62 +204,18 @@ const addEmployee = () => {
           if(err) throw err;
           console.log(`${newEmployeeData.newEmployee} added successfully!`)
           initiate();
-        })}
+        })
+      })
+  })
+}
 
-          // newEmployeeData.role_id = res[i].id
-//           selectManager(newEmployeeData);
-//         })
-//       })
-//   })
-// }
-// const completeAddEmployee = (newEmployeeData) => {
-//   const sql = `INSERT INTO employees (first_name, last_name, role_id, manager_id) 
-//   VALUES (?,?,?,?)`;
-//   const params = [newEmployeeData.first_name, newEmployeeData.last_name, newEmployeeData.role_id, newEmployeeData.manager_id]
-
-//   db.query(sql, params, (err, result) => {
-//     if (err){
-//       console.log(err)
-//     }
-//     console.log(`New ${newEmployeeData.title}, ${newEmployeeData.first_name} ${newEmployeeData.last_name}, added successfully.`)
-//     return initiate();
-//   })
-// }
-// const selectManager = (newEmployeeData) => {
-
-//   const sql = `SELECT employees.id, employees.first_name, employees.last_name, roles.title FROM employees JOIN roles ON employees.role_id = roles.id WHERE roles.title LIKE '%Manager%' OR roles.title LIKE '%Director%'`;
-
-//   db.query(sql, (err, res) => {
-//     for (let i = 0; i < res.length; i++) {
-//       manager = `${res[i].first_name} ${res[i].last_name}`, `${res[i].title}`
-//       managerArr.push(manager)
-//     }
-//     inquirer.prompt({
-//       type: 'list',
-//       name: 'manager',
-//       message: 'Select manager',
-//       choices: managerArr.map(manager => `${manager}`)
-//     }).then(manager => {
-//       newEmployeeData.manager = manager.manager
-
-//       let index = manager.manager.indexOf(" ")
-//       newEmployeeData.manager_first_name = manager.manager.substr(0, index)
-//       newEmployeeData.manager_last_name = manager.manager.substr(index + 1)
-//       const sql = `SELECT id FROM employees WHERE first_name = ? AND last_name = ?`;
-//       const params = [newEmployeeData.manager_first_name, newEmployeeData.manager_last_name]
-//       db.query(sql, params, (req, res) => {
-//         newEmployeeData.manager_id = res[0].id
-//         completeAddEmployee(newEmployeeData)
-//       })
-//     })
-//   })
-// }
 
 // UPDATE EMPLOYEE ROLE
 
-const selectEmployee = () => {
-  employeeArr = []
+
   let currentEmployee = {}
+  const selectEmployee = () => {
+    employeeArr = []
   const sql = `SELECT * FROM employees`;
   db.query(sql, (err, res) => {
     if (err) throw err
@@ -268,7 +226,7 @@ const selectEmployee = () => {
     inquirer.prompt({
       type: 'list',
       name: 'updateEmployee',
-      message: 'Which employee would you like to update?',
+      message: 'Select the employee you would like to update',
       choices: employeeArr.map(employee => `${employee}`)
 
     }).then(employee => {
@@ -476,4 +434,4 @@ db.connect(err => {
     console.log(`Server running on port ${PORT}`);
     initiate();
   });
-});
+})
