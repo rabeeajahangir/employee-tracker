@@ -7,12 +7,7 @@ const checkInput = require('../../utils/checkInput');
 
 //get all employees
 router.get('/employees', (req, res) => {
-    const sql = `SELECT employees.id, employees.first_name, employees.last_name, 
-    roles.title, roles.salary, 
-    departments.dept_name
-    FROM employees
-    JOIN roles ON employees.role_id = roles.id
-    JOIN departments ON roles.dept_id = departments.id`;
+    const sql = `SELECT * FROM employees`;
   
     db.query(sql, (err, rows) => {
       if (err) {
@@ -51,23 +46,17 @@ db.query(sql, params, (err, row) => {
 router.delete('/employee/:id', (req, res) => {
 const sql = `DELETE FROM employees WHERE id =?`;
 const params = [req.params.id]
-db.query(sql, params, (err, result) => {
+db.query(sql, params, (err, row) => {
     if (err) {
     res.status(400).json({
         error: err.message
-    })
-    } else if (!result.affectedRows) {
-    res.json({
-        message: 'Employee not found.'
-    })
-    } else {
+    });
+    return }
     res.json({
         message: 'Employee deleted successfully.',
-        changes: result.affectedRows,
-        id: req.params.id
-    })
-    }
-})
+        data: row
+    });
+});
 });
 
 router.post('/employee', ({body}, res) => {

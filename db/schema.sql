@@ -15,8 +15,7 @@ CREATE TABLE roles (
    id INT AUTO_INCREMENT PRIMARY KEY,
    title VARCHAR(30) NOT NULL,
    salary DECIMAL(15,2),
-   dept_id INT,
-   
+   dept_id INT
 );
 
 CREATE TABLE employees (
@@ -24,6 +23,5 @@ CREATE TABLE employees (
    first_name VARCHAR(30) NOT NULL,
    last_name VARCHAR(30) NOT NULL,
    role_id INT,
-   manager_id INT,
-   CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE SET NULL
-   );
+   manager_id INT
+);
